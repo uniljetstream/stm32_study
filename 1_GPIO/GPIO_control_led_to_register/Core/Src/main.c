@@ -98,7 +98,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  rRCC_AHB1ENR != (1<<2);	//GPIO Clock enable
+  rRCC_AHB1ENR |= (1<<2);	//GPIO Clock enable
   //rGPIOC_MODER = 0x55555555;
   rGPIOC_MODER |= (1<<14 | 1<<12 | 1<<10 | 1<<8 | 1<<6 | 1<<4 | 1 << 2 | 1);	//gpio mode 설정
   rGPIOC_OTYPER = 0x00000000;
