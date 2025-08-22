@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+//계속 send를 보내다고 입력이 들어오면 receive를 보내다.
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,14 +62,12 @@ static void MX_USART2_UART_Init(void);
 //USART2 RX에 인터럽트 요청이 있을 때 실행되는 Callback 함수
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-if (huart->Instance == USART2)
-{
-const char msg = "recv";
-for (int i=0;i<5;i++) {
-HAL_UART_Transmit(&huart2, (uint8_t)msg, strlen(msg), 100);
-}
-HAL_UART_Receive_IT(&huart2, &rxData, 1);
-}
+	if (huart->Instance == USART2)
+	{
+		const char* msg = "recv\r\n";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 100);
+		HAL_UART_Receive_IT(&huart2, &rxData, 1);
+	}
 }
 /* USER CODE END 0 */
 
@@ -110,7 +109,7 @@ SystemClock_Config();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   /* 주기적으로 "in ing" 전송 (1초 간격) */
-  const char *periodic = "ining";
+  const char *periodic = "send\r\n";
   while (1)
   {
 	size_t len = strlen(periodic);
