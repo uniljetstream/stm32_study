@@ -138,3 +138,60 @@ local.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,c,eclipse
 
+# STM32 specific files
+Debug/
+Release/
+*.elf
+*.bin
+*.list
+*.cyclo
+*.ioc.bak
+objects.list
+makefile
+sources.mk
+subdir.mk
+
+# STM32CubeIDE/Eclipse workspace
+.metadata/
+.project
+.cproject
+.settings/
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Editor backups
+*~
+*.swp
+*.swo
+*#
+.#*
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# Temporary build artifacts
+*.tmp
+objects.mk
+

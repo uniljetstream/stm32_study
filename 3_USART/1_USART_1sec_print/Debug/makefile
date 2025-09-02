@@ -60,8 +60,8 @@ all: main-build
 main-build: 1_USART_1sec_print.elf secondary-outputs
 
 # Tool invocations
-1_USART_1sec_print.elf 1_USART_1sec_print.map: $(OBJS) $(USER_OBJS) C:\kjh_workspace\stm32_study\3_USART\1_USART_1sec_print\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "1_USART_1sec_print.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\kjh_workspace\stm32_study\3_USART\1_USART_1sec_print\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="1_USART_1sec_print.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+1_USART_1sec_print.elf 1_USART_1sec_print.map: $(OBJS) $(USER_OBJS) C:\kjh_workspace\stm32_study\..\3_USART\1_USART_1sec_print\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "1_USART_1sec_print.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\kjh_workspace\stm32_study\..\3_USART\1_USART_1sec_print\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="1_USART_1sec_print.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
