@@ -23,9 +23,6 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
-/*
- * 왜 안되는지 모르겠다.
- */
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,6 +46,10 @@ DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
 uint8_t receive_data = 0;
+const char* send_msg = "send\r\n";
+const char* recv_msg = "recv\r\n";
+volatile uint8_t flag_received = 0;
+volatile uint32_t last_receive_tick = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,8 +65,15 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN 0 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
 {
-	if(huart->Instance == USART2)
-		HAL_UART_Transmit_IT(&huart2, &receive_data, 1);
+    if(huart->Instance == USART2)
+    {
+        // 수신 플래그 설정
+        flag_received = 1;
+        last_receive_tick = HAL_GetTick();
+
+        // 다음 바이트 수신을 위해 DMA 재시작
+        HAL_UART_Receive_DMA(&huart2, &receive_data, 1);
+    }
 }
 /* USER CODE END 0 */
 
@@ -99,21 +107,42 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  //USART2 Receive DMA를 시작
   MX_USART2_UART_Init();
-  HAL_UART_Receive_DMA(&huart2, &receive_data, 1);
   /* USER CODE BEGIN 2 */
+
+  // DMA 수신 시작
+  HAL_UART_Receive_DMA(&huart2, &receive_data, 1);
+
+  uint32_t last_send_tick = 0;
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//  const char* periodic = "send\r\n";
   while (1)
   {
-//	size_t len = strlen(periodic);
-//	HAL_UART_Transmit(&huart2, (uint8_t*)periodic, (uint16_t)len, 100); /* 블로킹 전송 */
-//	HAL_Delay(1000);
+    uint32_t current_tick = HAL_GetTick();
+
+    // 데이터를 받았으면 "recv" 출력
+    if(flag_received == 1)
+    {
+        flag_received = 0;  // 플래그 리셋
+        HAL_UART_Transmit(&huart2, (uint8_t*)recv_msg, strlen(recv_msg), 100);
+    }
+
+    // 최근 500ms 이내에 수신이 없었고, 1초가 지났으면 "send" 출력
+    if((current_tick - last_receive_tick > 500) && (current_tick - last_send_tick >= 1000))
+    {
+        HAL_UART_Transmit(&huart2, (uint8_t*)send_msg, strlen(send_msg), 100);
+        last_send_tick = current_tick;
+    }
+
+    // 수신 직후에는 send 타이머 리셋
+    if(current_tick - last_receive_tick <= 500)
+    {
+        last_send_tick = current_tick;
+    }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -273,6 +302,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
+
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
