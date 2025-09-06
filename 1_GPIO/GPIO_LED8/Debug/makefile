@@ -60,8 +60,8 @@ all: main-build
 main-build: GPIO_LED8.elf secondary-outputs
 
 # Tool invocations
-GPIO_LED8.elf GPIO_LED8.map: $(OBJS) $(USER_OBJS) C:\kjh_workspace\stm32_study\1_GPIO\GPIO_LED8\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "GPIO_LED8.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\kjh_workspace\stm32_study\1_GPIO\GPIO_LED8\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GPIO_LED8.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+GPIO_LED8.elf GPIO_LED8.map: $(OBJS) $(USER_OBJS) /home/wins/STM32CubeIDE/workspace/1_GPIO/GPIO_LED8/STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "GPIO_LED8.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/wins/STM32CubeIDE/workspace/1_GPIO/GPIO_LED8/STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GPIO_LED8.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

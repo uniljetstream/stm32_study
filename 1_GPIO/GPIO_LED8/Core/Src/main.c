@@ -104,7 +104,7 @@ int main(void)
 	  HAL_Delay(1000);
 #endif
 #if 1	//위코드와 같은 동작함, togglepin
-	  HAL_GPIO_TogglePin(GPIOC, LED1_Pin|LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin|LED6_Pin);
+	  HAL_GPIO_TogglePin(GPIOC, LED1_Pin|LED2_Pin|LED3_Pin|LED4_Pin|LED5_Pin|LED6_Pin|LED7_Pin|LED8_Pin);
 	  HAL_Delay(1000);
 #endif
     /* USER CODE END WHILE */
